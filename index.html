@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIME</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080c09;
+    --bg2: #0e1510;
+    --blue: #3d4f6e;
+    --blue-light: #6b8cba;
+    --blue-dim: #1e2a3a;
+    --text: #e8ede9;
+    --text-dim: #7a8f7e;
+    --line: #1a2030;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.4;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    border-bottom: 1px solid var(--line);
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .logo {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.35em;
+    color: var(--text);
+  }
+
+  .nav-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    border: 1px solid var(--line);
+    padding: 0.4rem 0.9rem;
+    border-radius: 2px;
+  }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+    animation: fadeUp 1s 0.2s ease both;
+  }
+
+  .hero-left {
+    padding: 7rem 4rem;
+    border-right: 1px solid var(--line);
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: var(--blue-light);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--blue-light);
+  }
+
+  h1 {
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 2rem;
+  }
+
+  h1 span { color: var(--blue-light); }
+
+  .hero-right {
+    padding: 7rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .hero-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 3rem;
+  }
+
+  .how-it-works {
+    border-top: 1px solid var(--line);
+    padding-top: 2rem;
+  }
+
+  .how-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .how-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .how-points li {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    padding-left: 1rem;
+    border-left: 2px solid var(--blue-dim);
+    line-height: 1.5;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .how-points li:hover {
+    border-color: var(--blue-light);
+    color: var(--text);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 1px solid var(--line);
+    animation: fadeUp 1s 0.4s ease both;
+  }
+
+  .stat {
+    padding: 3rem 4rem;
+    border-right: 1px solid var(--line);
+    transition: background 0.3s ease;
+  }
+
+  .stat:last-child { border-right: none; }
+  .stat:hover { background: var(--bg2); }
+
+  .stat-num {
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-num span { color: var(--blue-light); }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .cta-section {
+    padding: 6rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    animation: fadeUp 1s 0.6s ease both;
+  }
+
+  .cta-left h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 0.75rem;
+  }
+
+  .cta-left p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+
+  .waitlist-form {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--blue-dim);
+    overflow: hidden;
+  }
+
+  .waitlist-form input {
+    background: var(--bg2);
+    border: none;
+    outline: none;
+    padding: 1rem 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text);
+    width: 260px;
+    letter-spacing: 0.05em;
+  }
+
+  .waitlist-form input::placeholder { color: var(--text-dim); }
+
+  .waitlist-form button {
+    background: var(--blue);
+    border: none;
+    padding: 1rem 1.5rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .waitlist-form button:hover { background: var(--blue-light); }
+
+  footer {
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+  }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    opacity: 0.5;
+    letter-spacing: 0.05em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    nav, .cta-section, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left, .hero-right { padding: 3rem 1.5rem; border-right: none; }
+    .hero-right { border-top: 1px solid var(--line); }
+    .stats { grid-template-columns: 1fr; }
+    .stat { border-right: none; border-bottom: 1px solid var(--line); padding: 2rem 1.5rem; }
+    .cta-section { flex-direction: column; gap: 2.5rem; align-items: flex-start; }
+    .waitlist-form input { width: 180px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">RIME</div>
+  <div class="nav-tag">Data Indexing / Web3</div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-label">On-Chain Data Layer</div>
+    <h1>Blockchain<br>Data.<br><span>Served<br>Clean.</span></h1>
+  </div>
+  <div class="hero-right">
+    <p class="hero-sub">Lightweight on-chain data indexing that pulls, filters, and serves blockchain data cleanly to any protocol or front-end. No noise. No overhead.</p>
+    <div class="how-it-works">
+      <div class="how-label">// How it works</div>
+      <ul class="how-points">
+        <li>Connect your chain endpoint in under 60 seconds</li>
+        <li>Define filters — by address, event, or block range</li>
+        <li>Consume clean, structured data via REST or WebSocket</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num"><span>~</span>10<span>ms</span></div>
+    <div class="stat-label">Query Latency</div>
+    <div class="stat-desc">Sub-second indexed reads across any supported chain.</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">15<span>+</span></div>
+    <div class="stat-label">Chains Indexed</div>
+    <div class="stat-desc">EVM, Solana, and more — one unified query layer.</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">1<span>B+</span></div>
+    <div class="stat-label">Events Processed</div>
+    <div class="stat-desc">Production-grade scale from day one.</div>
+  </div>
+</div>
+
+<section class="cta-section">
+  <div class="cta-left">
+    <h2>Early Access<br>Now Open.</h2>
+    <p>Built for protocols that can't afford dirty data.</p>
+  </div>
+  <div class="waitlist-form">
+    <input type="email" placeholder="your@email.com" />
+    <button>Request Access</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">RIME</div>
+  <div class="footer-copy">© 2025 Rime Data. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
